@@ -17,13 +17,11 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import entities.carrinho.Carrinho;
 import entities.usuario.DatabaseUsuario;
-import javax.swing.SwingConstants;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class TelaLogin extends JFrame {
+public class TelaCadastro extends JFrame {
 
 	/**
 	 * 
@@ -38,7 +36,7 @@ public class TelaLogin extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					TelaLogin frame = new TelaLogin();
+					TelaCadastro frame = new TelaCadastro();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -50,9 +48,9 @@ public class TelaLogin extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public TelaLogin() {
+	public TelaCadastro() {
 		setTitle("CATALOGO EMPORIO ALQUIMISTA");
-		setIconImage(Toolkit.getDefaultToolkit().getImage(TelaLogin.class.getResource("/images/icon_emporio.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(TelaCadastro.class.getResource("/images/icon_emporio.png")));
 		setResizable(false);
 		setBackground(new Color(128, 0, 255));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -64,6 +62,24 @@ public class TelaLogin extends JFrame {
 		getContentPane().setBackground(new Color(120,0,180));
 		contentPane.setLayout(null);
 	
+		JPanel iconVoltar = new JPanel();
+		iconVoltar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				dispose();
+				TelaLogin telaLogin = new TelaLogin();
+				telaLogin.setVisible(true);
+			}
+		});
+		
+		iconVoltar.setBorder(null);
+		iconVoltar.setOpaque(false);
+		iconVoltar.setBounds(10, 0, 64, 64);
+		iconVoltar.add(new JLabel(new ImageIcon(getClass().getResource("../images/icon_voltar.png"))));
+		contentPane.add(iconVoltar);
+		
+		
+		
 		JPanel logoPanel = new JPanel();
 		logoPanel.setBorder(null);
 		logoPanel.setOpaque(false);
@@ -77,22 +93,21 @@ public class TelaLogin extends JFrame {
 		JPasswordField campoSenha = new JPasswordField(12);
 		campoSenha.setBounds(122, 427, 189, 32);
 		
-		JButton botaoLogin = new JButton("Fazer Login");
-		botaoLogin.setForeground(new Color(120, 0, 180));
-		botaoLogin.setBackground(new Color(255, 255, 255));
-		botaoLogin.setFont(new Font("Tahoma", Font.BOLD, 15));
-		botaoLogin.setBounds(122, 483, 189, 44);
+		JButton botaoCadastro = new JButton("Criar conta");
+		botaoCadastro.setForeground(new Color(120, 0, 180));
+		botaoCadastro.setBackground(new Color(255, 255, 255));
+		botaoCadastro.setFont(new Font("Tahoma", Font.BOLD, 15));
+		botaoCadastro.setBounds(122, 483, 189, 44);
 		
-		botaoLogin.addActionListener(new ActionListener() {
+		botaoCadastro.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			
-				if(DatabaseUsuario.autenticarUsuario(campoUsername.getText(), String.valueOf(campoSenha.getPassword()))) {
-					dispose();
-					Carrinho carrinhoSessao = new Carrinho();
-					JFrame telaPrincipal = new TelaPrincipal(carrinhoSessao);
-					telaPrincipal.setVisible(true);
+				if(DatabaseUsuario.cadastrarUsuario(campoUsername.getText(), String.valueOf(campoSenha.getPassword()))) {
+					campoUsername.setText("");
+					campoSenha.setText("");
+					JOptionPane.showMessageDialog(botaoCadastro, "Cadastro realizado!");
 				} else {
-					JOptionPane.showMessageDialog(botaoLogin, "Usuario ou senha invalidos");
+					JOptionPane.showMessageDialog(botaoCadastro, "Usuario ja existente!");
 				}
 				
 			}
@@ -101,7 +116,7 @@ public class TelaLogin extends JFrame {
 		
 		contentPane.add(campoUsername);
 		contentPane.add(campoSenha);
-		contentPane.add(botaoLogin);
+		contentPane.add(botaoCadastro);
 		
 		JLabel labelUsername = new JLabel("Usuário");
 		labelUsername.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -115,22 +130,6 @@ public class TelaLogin extends JFrame {
 		labelSenha.setBounds(122, 407, 46, 14);
 		contentPane.add(labelSenha);
 		
-		JLabel labelBtnRegistrar = new JLabel("Registre-se");
-		labelBtnRegistrar.setFont(new Font("Tahoma", Font.BOLD, 15));
-		labelBtnRegistrar.setHorizontalAlignment(SwingConstants.CENTER);
-		labelBtnRegistrar.setForeground(new Color(255, 255, 255));
-		labelBtnRegistrar.setBounds(122, 569, 189, 14);
-		contentPane.add(labelBtnRegistrar);
-		
-		labelBtnRegistrar.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				dispose();
-				TelaCadastro telaCadastro = new TelaCadastro();
-				telaCadastro.setVisible(true);
-			}
-		});
-
 		
 	}
 }

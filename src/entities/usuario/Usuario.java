@@ -26,4 +26,11 @@ public class Usuario {
 		this.senha = senha;
 	}
 
+	@Override
+	public String toString() {
+		return "Usuario [nomeDeUsuario=" + nomeDeUsuario + ", senha=" + senha + "]";
+	}
+
+	
+	
 }
